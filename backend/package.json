@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bandcamp-scraper": "^1.4.1",
+    "express": "^4.17.1",
+    "google-books-search": "^0.3.1",
+    "knex": "^0.95.15",
+    "metacritic-scraper": "^0.3.4",
+    "mysql-insert-multiple": "^1.0.4",
+    "node-fetch": "^2.6.0",
+    "node-isbn": "^1.5.1",
+    "omdbapi": "^3.0.0",
+    "pg": "^8.2.0",
+    "pg-format": "^1.0.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "steam-searcher": "^1.0.4",
+    "vs-spotify-api-wrapper": "^1.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
