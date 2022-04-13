@@ -5,9 +5,10 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'myreview',
+      database: 'my_review',
+      host: "myreviewinstance.ceihmk6lcdnm.us-east-1.rds.amazonaws.com",
       user:     'postgres',
-      password: 'root',
+      password: 'myreview123',
       port: 5432,
     },
     pool: {
