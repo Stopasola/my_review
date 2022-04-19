@@ -1,8 +1,0 @@
-Chave estrangeira
-
- - https://www.sqlservertutorial.net/sql-server-basics/sql-server-foreign-key/
-
- - http://www.bosontreinamentos.com.br/postgresql-banco-dados/criando-chave-estrangeira-em-postgresql/
-
- -  Conxão postgres
- - https://www.youtube.com/watch?v=qRhzfZKmcts&list=PLPFhNx6dMDJrGREcnnI6uxv8Mmx6zUeUW&index=2
