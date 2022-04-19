@@ -3,12 +3,13 @@ const connection =  require('../database/connection')
 module.exports = {
 
   async create(request, response) {
-    const {weight, title, description} = request.body;
+    const {weight, title, description, url_img} = request.body;
 
     await connection('badge').insert({
         weight, 
         title, 
-        description
+        description,
+        url_img
     })
 
     return response.json({ 'status': 'Badge criado' });
