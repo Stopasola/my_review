@@ -14,6 +14,7 @@
     "express": "^4.17.1",
     "google-books-search": "^0.3.1",
     "knex": "^0.95.15",
+    "knex-paginate": "^3.0.0",
     "metacritic-scraper": "^0.3.4",
     "mysql-insert-multiple": "^1.0.4",
     "node-fetch": "^2.6.0",

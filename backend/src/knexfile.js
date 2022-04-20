@@ -1,4 +1,5 @@
-// Update with your config settings.
+const { attachPaginate } = require('knex-paginate');
+attachPaginate();
 
 module.exports = {
 
