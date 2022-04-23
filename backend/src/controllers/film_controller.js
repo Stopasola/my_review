@@ -1,45 +1,70 @@
 const connection =  require('../database/connection')
+const schema =  require('../schemas/film_schema')
+const Joi = require('joi');
+
 
 module.exports = {
 
   async create(request, response) {
-    const {full_name, age_group, started_at, created_at} = request.body;
-
-    await connection('film').insert({
-        full_name, 
-        age_group, 
-        started_at,  
-        created_at
-    })
-
-    return response.json({ 'status': 'Filme criado' });
-  },
+    try {
+      const value = await schema.filmSchema.validateAsync(request.body, { abortEarly: false }, {"context": {"method": "post"}}); 
+      await connection('film').insert(value)
+      return response.status(200).json({message: "Film created"})
+    } catch (error) {
+      return response.status(404).json({message: error})
+    }
+   },
 
   async update(request, response) {
-    const { id, field, content } = request.body;
+    const {id} = request.params;
+    const changes = request.body;
 
-    console.log(field)
-    console.log(content)
-
-    await connection('film')
-      .where('id', id)
-      .update({
-        full_name: content
-      })
-
-    return response.json({ 'status': 'Filme Alterado' });
+    try {
+      const value = await schema.filmSchema.validateAsync(changes, { abortEarly: false }, {"context": {"method": "put"}});
+      const count = await connection('film').where({id}).update(value);
+      if (count) {
+        response.status(200).json({message: `Film with id ${id} updated`})
+      } else {
+        response.status(404).json({message: "Film not found"})
+      }
+    } catch (err) {
+      response.status(500).json({message: `Error updating Film with id ${id}`, error: err})
+    }
   },
 
   async delete(request, response) {
-    const { id } = request.body;
+    const { id } = request.params;
 
-    console.log(id)
+    try {  
+      const result = await connection('film').where('id', id).del()
+      if (result) {
+        response.status(200).json({message: `Film with id ${id} deleted`})
+      } else {
+        response.status(404).json({message: "Film does not exists"})
+      }
+    } catch (err) {
+      response.status(500).json({message: `Film deleting Badge with id ${id}`, error: err})
+    }
+  },
 
-    await connection('film')
-      .where('id', id)
-      .del()
+  async index(request, response) {
+    const page = request.query.page;
+    
+    return connection("film").paginate({ perPage: 10, currentPage: page })
+    .then(results => {
+      response.status(200).json({results: results})
+    })
+  },
 
-    return response.json({ 'status': 'Filme Deletado' });
+  async show(request, response) {
+    const { id } = request.params;
+    
+    try {
+      const result = await connection("film").where('id', id)
+      response.status(200).json({results: result})
+
+    } catch(error){
+      response.status(404).json({message: "Problem retrieving film"})
+    }
   }
-
 }
