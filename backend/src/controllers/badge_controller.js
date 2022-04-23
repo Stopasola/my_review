@@ -1,21 +1,19 @@
 const connection =  require('../database/connection')
+const schema =  require('../schemas/badge_schema')
+const Joi = require('joi');
 
 module.exports = {
 
   async create(request, response) {
-    const {weight, title, description, url_img} = request.body;
     try {
-      var found = await connection('badge').where({title: title}).count('id')
-      if (Number(found[0]['count']) > 0){
-        return response.status(404).json({message: "An badge with this title already exists."})
-      }else if(Number(weight) > 5 || Number(weight) < 0){
-        return response.status(404).json({message: "The weight must be between 0 and 5."})
-      } else {
-        await connection('badge').insert({ weight, title, description, url_img})
-        return response.status(200).json({message: "Badge created"})
-      }
-    } catch (err) {
-      response.status(500).json({message: "Error creating new badge", error: err})
+      const value = await schema.badgeSchema.validateAsync(request.body, { abortEarly: false }, {"context": {"method": "post"}}); 
+      
+      var found = await connection('badge').where({title: value["title"]})
+      if (found.length) { return response.status(404).json({message: "An badge with this title already exists."}) }
+      await connection('badge').insert(value)
+      return response.status(200).json({message: "Badge created"})
+    } catch (error) {
+      return response.status(404).json({message: error})
     }
   },
 
@@ -24,7 +22,8 @@ module.exports = {
     const changes = request.body;
 
     try {
-      const count = await connection('badge').where({id}).update(changes);
+      const value = await schema.badgeSchema.validateAsync(changes, { abortEarly: false }, {"context": {"method": "put"}});
+      const count = await connection('badge').where({id}).update(value);
       if (count) {
         response.status(200).json({message: `Badge with id ${id} updated`})
       } else {
