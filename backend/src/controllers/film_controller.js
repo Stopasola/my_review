@@ -1,6 +1,7 @@
 const connection =  require('../database/connection')
 const schema =  require('../schemas/film_schema')
 const Joi = require('joi');
+const search_engine = require('../../utils/search_engine');
 
 
 module.exports = {
@@ -58,11 +59,20 @@ module.exports = {
 
   async show(request, response) {
     const { id } = request.params;
-    
     try {
       const result = await connection("film").where('id', id)
       response.status(200).json({results: result})
 
+    } catch(error){
+      response.status(404).json({message: "Problem retrieving film"})
+    }
+  },
+
+  async search(request, response) {
+    const filters = request.body;
+    try {
+      const result = await search_engine(filters, 'film')
+      return response.status(200).json({results: result}) 
     } catch(error){
       response.status(404).json({message: "Problem retrieving film"})
     }
