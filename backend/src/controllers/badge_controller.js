@@ -1,6 +1,5 @@
 const connection =  require('../database/connection')
 const schema =  require('../schemas/badge_schema')
-const Joi = require('joi');
 
 module.exports = {
 
